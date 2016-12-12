@@ -53,10 +53,10 @@
 
 (defn hy-all-keywords [&optional [sort true]]
   "Return a list of all keywords (sorted by default)."
-  (let [keywords (+ (hy-language-keywords)
+  (let [[keywords (+ (hy-language-keywords)
                     (hy-shadow-keywords)
                     (hy-macro-keywords)
-                    (hy-compiler-keywords))]
+                    (hy-compiler-keywords))]]
     (when sort
       (setv keywords (sorted keywords)))
     (list-comp (str x) [x keywords])))
