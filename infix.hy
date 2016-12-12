@@ -1,7 +1,6 @@
-
 (defn parenthesize [input]
   "Fully parenthize the input string."
-  (let [s ""]
+  (let [[s ""]]
     (+= s "((((")
     (for [(, i char) (enumerate input)]
       (cond
@@ -41,7 +40,7 @@ CODE is stringified, parenthesized, read back and infixed."
              (serialize.stringify ~code)))))))
 
 (defreader m [code]
- `(do
+  `(do
     (import infix)
     (import serialize)
     (eval (infix.nfx
@@ -76,41 +75,47 @@ We assume that CODE is in infix notation."
      ;; treat lists in [] special
      [(and (instance?  hy.models.list.HyList code)
            (not (instance?  hy.models.expression.HyExpression code)))
-      (when debug (print "list: " code " type: " (type code)))
-      code]
+      (do
+       (when debug (print "list: " code " type: " (type code)))
+       code)]
 
      [(= 1 (len code))
       ;; element is an Expression
-      (when debug (print (* " " indent) "1: " code))
-      (if (isinstance (car code) hy.models.expression.HyExpression)
-        (nfx (car code) (+ indent 1) debug)
-        ;; single element
-        (car code))]
+      (do
+       (when debug (print (* " " indent) "1: " code))
+       (if (isinstance (car code) hy.models.expression.HyExpression)
+         (nfx (car code) (+ indent 1) debug)
+         ;; single element
+         (car code)))]
 
      ;; {- 1} ->  (- 1)
      [(= 2 (len code))
-      (when debug (print (* " " indent) "2: " code))
-      `(~(nfx (get code 0) (+ indent 1) debug)
-         ~(nfx (get code 1) (+ indent 1) debug))]
+      (do
+       (when debug (print (* " " indent) "2: " code))
+       `(~(nfx (get code 0) (+ indent 1) debug)
+          ~(nfx (get code 1) (+ indent 1) debug)))]
 
      ;; {1 + 2} -> (+ 1 2)
      [(= 3 (len code))
-      (when debug (print (* " " indent) "3: " code))
-      `(~(get code 1)
-         ~(nfx (get code 0) (+ indent 1) debug)
-         ~(nfx (get code 2) (+ indent 1) debug))]
+      (do
+       (when debug (print (* " " indent) "3: " code))
+       `(~(get code 1)
+          ~(nfx (get code 0) (+ indent 1) debug)
+          ~(nfx (get code 2) (+ indent 1) debug)))]
 
      ;; longer expression, swap first two and take the rest.
      [true
-      (when debug (print "expr: " code))
-      `(~(nfx (get code 1) (+ indent 1) debug)
-         ~(nfx (get code 0) (+ indent 1) debug)
-         (~@(nfx (cut code 2) (+ indent 1) debug)))])]
+      (do
+       (when debug (print "expr: " code))
+       `(~(nfx (get code 1) (+ indent 1) debug)
+          ~(nfx (get code 0) (+ indent 1) debug)
+          (~@(nfx (cut code 2) (+ indent 1) debug))))])]
 
    ;; non-iterable just gets returned
    [true
-    (when debug (print (* " " indent) "true: " code))
-    code]))
+    (do
+     (when debug (print (* " " indent) "true: " code))
+     code)]))
 
 (defmacro $ [&rest code]
   "Eval CODE in infix notation."
