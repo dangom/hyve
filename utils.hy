@@ -36,7 +36,7 @@ exactly the same, here we just make a nicer syntax to catch exceptions."
 
 (defmacro with-current-directory [directory &rest body]
   "Change to DIRECTORY, execute BODY and change back to original directory."
-  (let [cwd (gensym)]
+  (let [[cwd (gensym)]]
     `(do
       (import os)
       (let [~cwd (os.getcwd)]
