@@ -214,12 +214,12 @@ SYM should be a function or module."
      (except [e TypeError] "[Args not accessible by inspect]"))))
 
 
-;; * hyldoc
-(defmacro get-org-link [sym]
-  "Return an org-mode link to the file location where SYM is defined."
-  `(.format "[[{0}::{1}]]"
-            (getsourcefile ~(get-python-object sym))
-            (getlineno ~(get-python-object sym))))
+;; ;; * hyldoc
+;; (defmacro get-org-link [sym]
+;;   "Return an org-mode link to the file location where SYM is defined."
+;;   `(.format "[[{0}::{1}]]"
+;;             (getsourcefile ~(get-python-object sym))
+;;             (getlineno ~(get-python-object sym))))
 
 
 (defmacro ? [sym]
@@ -227,12 +227,12 @@ SYM should be a function or module."
   `(.format "({0} {1})" ~(name sym) (getargs ~sym)))
 
 
-(defmacro ?? [sym]
-  "Return help string for the symbol SYM."
-  `(do
-    (require hy)
-    (.format "{0} defined in {1}
+;; (defmacro ?? [sym]
+;;   "Return help string for the symbol SYM."
+;;   `(do
+;;     (require hy)
+;;     (.format "{0} defined in {1}
 
-  ({0} {2})
+;;   ({0} {2})
 
-{3}" ~(name sym) (get-org-link ~sym) (getargs ~sym) (getdoc ~sym))))
+;; {3}" ~(name sym) (get-org-link ~sym) (getargs ~sym) (getdoc ~sym))))
