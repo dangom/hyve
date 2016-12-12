@@ -29,9 +29,9 @@ This macro is inspired from the similar emacs-lisp macro. It might not be
 exactly the same, here we just make a nicer syntax to catch exceptions."
   `(try
     ~do-form
-    (except [e Exception] (print "Caught " e))
-    (finally (do ~@body
-                 (raise)))))
+    (except [e Exception] (print "Caught" e "...\n Cleaning up")
+      (finally (do ~@body
+                   (raise))))))
 
 
 (defmacro with-current-directory [directory &rest body]
@@ -39,7 +39,7 @@ exactly the same, here we just make a nicer syntax to catch exceptions."
   (let [[cwd (gensym)]]
     `(do
       (import os)
-      (let [~cwd (os.getcwd)]
+      (let [[~cwd (os.getcwd)]]
         (os.chdir ~directory)
         (unwind-protect
          (do ~@body)
