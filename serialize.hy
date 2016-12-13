@@ -19,7 +19,7 @@
    [(or (isinstance form hy.models.string.HyString)
         (isinstance form unicode))
     (.format "\"{}\"" form)]
-   [true
+   [True
     (.format "{}" form)]))
 
 (defn scriptify [form fname]

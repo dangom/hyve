@@ -23,7 +23,7 @@
         (if (or (= 0 i) (in (get input (- i 1)) ["(" "^" "*" "/" "+" "-"]))
           (+= s "- ")
           (+= s ")))-((("))]
-       [true
+       [True
         (+= s char)]))
     (+= s "))))")
     s))
@@ -104,7 +104,7 @@ We assume that CODE is in infix notation."
           ~(nfx (get code 2) (+ indent 1) debug)))]
 
      ;; longer expression, swap first two and take the rest.
-     [true
+     [True
       (do
        (when debug (print "expr: " code))
        `(~(nfx (get code 1) (+ indent 1) debug)
@@ -112,9 +112,9 @@ We assume that CODE is in infix notation."
           (~@(nfx (cut code 2) (+ indent 1) debug))))])]
 
    ;; non-iterable just gets returned
-   [true
+   [True
     (do
-     (when debug (print (* " " indent) "true: " code))
+     (when debug (print (* " " indent) "True: " code))
      code)]))
 
 (defmacro $ [&rest code]
