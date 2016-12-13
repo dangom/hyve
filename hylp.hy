@@ -39,8 +39,9 @@
 
 
 (defn hy-macro-keywords []
-  "Return list of macro keywords"
-  (+ (.keys (get hy.macros._hy_macros nil))
+  "Return list of macro keywords.
+Won't work under Python 3 because it doesn't allow summing dict_keys."
+  (+ (.keys (get hy.macros._hy_macros None))
      (.keys (get hy.macros._hy_macros "__main__"))
      (.keys (get hy.macros._hy_macros "__console__"))))
 
@@ -96,19 +97,19 @@ does some action."
      ;; this is a .name that is an attribute of the next item in the expression.
      ;; We can't do anything with this.
      [(= "." ~(HyString (get (name sym) 0)))
-      nil]
+      None]
 
      ;; this is module.sym of some kind already in the namespace. No need to do
      ;; anything.
      [(in ~(HyString (get (.split (name sym) ".") 0)) (.keys (globals)))
-      nil]
+      None]
 
      ;; A hy symbol we know about. we don't need to do anything.
      [(in ~(HyString (name sym)) (+ (hy-compiler-keywords)
                                     (hy-macro-keywords)
                                     (hy-shadow-keywords)
                                     (hy-language-keywords)))
-      nil]
+      None]
 
      ;; A dotted name where the base is not in the namespace. Try importing.
      [(and (in "." ~(HyString (name sym)))
@@ -130,7 +131,7 @@ If SYM has a . in it, import the base module, unless the dot is the first charac
     (try
      (or (->> false
               (.get hy.compiler._compile_table '~sym)
-              (.get (get hy.macros._hy_macros nil) '~sym)
+              (.get (get hy.macros._hy_macros None) '~sym)
               (.get (get hy.macros._hy_macros "__main__") '~sym)
               (.get (get hy.macros._hy_macros "__console__") '~sym)
               (.get hy.core.shadow.__dict__ '~sym)
@@ -173,7 +174,7 @@ SYM should be a function or module."
       1]
      ;; We don't know what this is
      [True
-      nil])))
+      None])))
 
 
 ;; * Args of functions

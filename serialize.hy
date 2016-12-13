@@ -46,7 +46,7 @@
   (setv code (hi.ast_compile _ast "<string>" "exec"))
 
   ;; create file and close it so we get the size
-  (with [f (open fname "wb")] nil)
+  (with [f (open fname "wb")] None)
   (with [f (open fname "wb")]
         (try
          (setv st (os.fstat (f.fileno)))
