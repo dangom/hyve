@@ -1,6 +1,6 @@
 (defn parenthesize [input]
   "Fully parenthize the input string."
-  (let [[s ""]]
+  (let [s ""]
     (+= s "((((")
     (for [(, i char) (enumerate input)]
       (cond
@@ -118,7 +118,8 @@ We assume that CODE is in infix notation."
      code)]))
 
 (defmacro $ [&rest code]
-  "Eval CODE in infix notation."
+  "Eval CODE in infix notation.
+Example: ($ '(2 + 2 * 3))"
   `(do
     (import infix)
     (eval (infix.nfx ~code))))
