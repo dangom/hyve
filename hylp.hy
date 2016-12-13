@@ -129,7 +129,7 @@ If SYM has a . in it, import the base module, unless the dot is the first charac
   `(do
     (do-import ~sym)
     (try
-     (or (->> false
+     (or (->> False
               (.get hy.compiler._compile_table '~sym)
               (.get (get hy.macros._hy_macros None) '~sym)
               (.get (get hy.macros._hy_macros "__main__") '~sym)
