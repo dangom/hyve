@@ -54,9 +54,9 @@
 (defn hy-all-keywords [&optional [sort true]]
   "Return a list of all keywords (sorted by default)."
   (let [[keywords (+ (hy-language-keywords)
-                    (hy-shadow-keywords)
-                    (hy-macro-keywords)
-                    (hy-compiler-keywords))]]
+                     (hy-shadow-keywords)
+                     (hy-macro-keywords)
+                     (hy-compiler-keywords))]]
     (when sort
       (setv keywords (sorted keywords)))
     (list-comp (str x) [x keywords])))
@@ -95,29 +95,29 @@ does some action."
 
      ;; this is a .name that is an attribute of the next item in the expression.
      ;; We can't do anything with this.
-     [(= "." ~(get (name sym) 0))
+     [(= "." ~(HyString (get (name sym) 0)))
       nil]
 
      ;; this is module.sym of some kind already in the namespace. No need to do
      ;; anything.
-     [(in ~(get (.split (name sym) ".") 0) (.keys (globals)))
+     [(in ~(HyString (get (.split (name sym) ".") 0)) (.keys (globals)))
       nil]
 
      ;; A hy symbol we know about. we don't need to do anything.
-     [(in ~(name sym) (+ (hy-compiler-keywords)
-                         (hy-macro-keywords)
-                         (hy-shadow-keywords)
-                         (hy-language-keywords)))
+     [(in ~(HyString (name sym)) (+ (hy-compiler-keywords)
+                                    (hy-macro-keywords)
+                                    (hy-shadow-keywords)
+                                    (hy-language-keywords)))
       nil]
 
      ;; A dotted name where the base is not in the namespace. Try importing.
-     [(and (in "." ~(name sym))
-           (not (in ~(get (.split (name sym) ".") 0) (.keys (globals)))))
+     [(and (in "." ~(HyString (name sym)))
+           (not (in ~(HyString (get (.split (name sym) ".") 0)) (.keys (globals)))))
       (try
        (do
         (import ~(hy.models.symbol.HySymbol
                   (get (.split (name sym) ".") 0)))
-        (print "imported " ~(get (.split (name sym) ".") 0)))
+        (print "imported " ~(HyString (get (.split (name sym) ".") 0))))
        (except [e ImportError] (print e)))])))
 
 
